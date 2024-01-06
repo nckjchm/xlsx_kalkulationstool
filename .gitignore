@@ -1,0 +1,7 @@
+__pycache__/
+build/
+dist/
+*.xlsx
+resourcen/*
+!test.xlsx
+!resourcen/Kalkulationsvorlage.xlsx
