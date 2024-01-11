@@ -5,3 +5,4 @@ dist/
 resourcen/*
 !test.xlsx
 !resourcen/Kalkulationsvorlage.xlsx
+!resourcen/Logo.png
