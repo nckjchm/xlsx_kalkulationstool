@@ -4,8 +4,9 @@
 pyinstaller ./kalkulationsanwendung.py \
     --noconfirm --log-level=WARN \
     --clean \
-    --onedir \
+    --onefile \
     --add-data="resourcen/Kalkulationsvorlage.xlsx:resourcen/" \
+    --add-data="resourcen/logo.png:resourcen/" \
     -w
 
     

@@ -8,10 +8,8 @@ from kalkulationsdaten import Kalkulationsdaten, Rechnungseinheit, Kategorie
 def pfad_zu_ressource_finden(resource : str):
     if getattr(sys, 'frozen', False):
         path = os.path.abspath(os.path.join(getattr(sys, '_MEIPASS'), resource))
-        print("frozen state \n", path)
         return path
     else:
-        print ("unfrozen state \n", resource)
         return resource
 
 def workbook_oeffnen(pfad : str, read_only_modus = False):
@@ -92,13 +90,20 @@ def daten_einlesen(datei : Workbook):
         zeile += 1
     return kalkulationsdaten
 
-def formatierungsstartpunkt_finden(ws : Worksheet):
+def format_start_finden(ws : Worksheet):
+    return formatierungspunkt_finden(ws, "[START]")
+
+def format_logoposition_finden(ws: Worksheet):
+    return formatierungspunkt_finden(ws, "[LOGO]")
+
+def formatierungspunkt_finden(ws : Worksheet, muster : str):
     for z_index, zeile in enumerate(ws.iter_rows(max_row = 100, max_col = 100)):
         for s_index, cell in enumerate(zeile):
-            if cell.value == "[START]":
+            if cell.value == muster:
                 return z_index + 1, s_index + 1
     return None
 
+"""
 def formatierte_daten_einfuegen(ws : Worksheet, daten : list[list[str]], startpunkt : (int, int)):
     zeilen = len(daten)
     ws.delete_rows(startpunkt[0])
@@ -108,3 +113,4 @@ def formatierte_daten_einfuegen(ws : Worksheet, daten : list[list[str]], startpu
         for s_index, wert in enumerate(zeile):
             arbeitsspalte = startpunkt[1] + s_index
             ws.cell(arbeitszeile, arbeitsspalte, wert)
+"""

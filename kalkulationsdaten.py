@@ -16,6 +16,7 @@ class Kalkulationsdaten:
             summe += kategorie.untersumme_berechnen()
         return summe
     
+    """
     def gefiltert_ausgeben(self):
         ausgabe : list[list[str]] = []
         for kategorie in self.abrechnungskategorien:
@@ -25,6 +26,21 @@ class Kalkulationsdaten:
                     ausgabe.append([einheit.name, einheit.menge, str(einheit.preis) + "/" + str(einheit.nenner), einheit.summe_berechnen()])
         ausgabe.append(["Gesamt", None, None, self.gesamtsumme_berechnen()])
         return ausgabe
+    """
+    
+    def format_string(self, kategorie = None, einheit = None, *args, **kwargs):
+        formdict = {
+            "[GESAMT_SUMME]" : self.gesamtsumme_berechnen()
+        }
+        if kategorie is not None:
+            formdict.update(kategorie.format_string(einheit))
+            formdict["[KATEGORIE_INDEX]"] = self.abrechnungskategorien.index(kategorie)
+        return formdict
+
+    def filtern(self):
+        self.abrechnungskategorien = [kategorie for kategorie in self.abrechnungskategorien if kategorie.ist_nicht_leer()]
+        for kategorie in self.abrechnungskategorien:
+            kategorie.rechnungseinheiten = [rechnungseinheit for rechnungseinheit in kategorie.rechnungseinheiten if rechnungseinheit.ist_nicht_leer()]
 
 
 #Datencontainer fuer alle Daten einer Unterkategorie der Kalkulation
@@ -54,6 +70,17 @@ class Kategorie:
         for einheit in self.rechnungseinheiten:
             untersumme += einheit.summe_berechnen()
         return untersumme
+    
+    def format_string(self, einheit = None):
+        formdict = {
+            "[KATEGORIE_NAME]" : self.name,
+            "[KATEGORIE_SUMME]" : self.untersumme_berechnen()
+        }
+        if einheit is not None:
+            formdict.update(einheit.format_string())
+            formdict["[EINHEIT_INDEX]"] = self.rechnungseinheiten.index(einheit)
+        return formdict
+    
 
 #Datencontainer für die Daten eines einzelnen Punkts der Kalkulationstabelle
 class Rechnungseinheit:
@@ -69,3 +96,13 @@ class Rechnungseinheit:
     
     def summe_berechnen(self):
         return self.preis * self.menge
+    
+    def format_string(self):
+        return {
+            "[EINHEIT_PREIS]" : self.preis,
+            "[EINHEIT_NAME]" : self.name,
+            "[EINHEIT_NENNER]" : self.nenner,
+            "[EINHEIT_MENGE]" : self.menge,
+            "[EINHEIT_SUMME]" : self.menge * self.preis
+        }
+    
