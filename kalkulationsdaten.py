@@ -1,3 +1,5 @@
+from openpyxl.utils.cell import get_column_letter
+
 
 #Datencontainer für alle zur Kalkulation gehörenden Daten
 class Kalkulationsdaten:
@@ -34,7 +36,7 @@ class Kalkulationsdaten:
         }
         if kategorie is not None:
             formdict.update(kategorie.format_string(einheit))
-            formdict["[KATEGORIE_INDEX]"] = self.abrechnungskategorien.index(kategorie)
+            formdict["[KATEGORIE_INDEX]"] = get_column_letter(self.abrechnungskategorien.index(kategorie) + 1)
         return formdict
 
     def filtern(self):
@@ -78,7 +80,7 @@ class Kategorie:
         }
         if einheit is not None:
             formdict.update(einheit.format_string())
-            formdict["[EINHEIT_INDEX]"] = self.rechnungseinheiten.index(einheit)
+            formdict["[EINHEIT_INDEX]"] = self.rechnungseinheiten.index(einheit) + 1
         return formdict
     
 

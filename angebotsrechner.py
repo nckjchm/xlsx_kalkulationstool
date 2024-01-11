@@ -6,6 +6,7 @@ from util import *
 from openpyxl.drawing.image import Image
 from openpyxl.utils.cell import get_column_letter
 from formatierer import Formatierer
+from openpyxl.drawing.spreadsheet_drawing import TwoCellAnchor
 formatvorlage = "resourcen/Kalkulationsvorlage.xlsx"
 logodatei = "resourcen/logo.png"
 daten_auf_konsole_ausgeben = False
@@ -65,22 +66,22 @@ def fuege_logo_ein(ws : Worksheet):
     if logoposition is not None:
         bild = Image(pfad_logo)
         logozelle = ws.cell(logoposition[0], logoposition[1])
-        logozelle_sting_index = f"{get_column_letter(logoposition[1])}{str(logoposition[0])}"
-        logozellen : str = f"{logozelle_sting_index}:{logozelle_sting_index}"
-        if ws.merged_cells.__contains__(logozelle_sting_index):
+        logozelle_string_index = f"{get_column_letter(logoposition[1])}{str(logoposition[0])}"
+        logozellen_bounds = (logoposition[1], logoposition[0], logoposition[1], logoposition[0])
+        if ws.merged_cells.__contains__(logozelle_string_index):
             for bereich in ws.merged_cells:
-                if bereich.__contains__(logozelle_sting_index):
+                if bereich.__contains__(logozelle_string_index):
                     logozellen_bounds = bereich.bounds
-                    logozellen = f"{get_column_letter(logozellen_bounds[1])}{str(logozellen_bounds[0])}:{get_column_letter(logozellen_bounds[3])}{str(logozellen_bounds[2])}"
         else:
             print(f"{logozelle} is not part of any merged cells.")
-        gesamtbreite = 0
-        for spalte in range(ord(logozellen[0]), ord(logozellen[3]) + 1):
-            gesamtbreite += ws.column_dimensions[get_column_letter(spalte)].width
-            print(gesamtbreite)
-        bild.anchor = logozelle_sting_index
-        #bild.width = gesamtbreite
-        ws.add_image(bild)
+        ws.add_image(bild, logozelle_string_index)
+        bild_anker = TwoCellAnchor()
+        bild_anker._from.col = logozellen_bounds[0] - 1
+        bild_anker._from.row = logozellen_bounds[1] - 1
+        bild_anker.to.col = logozellen_bounds[2]
+        bild_anker.to.row = logozellen_bounds[3]
+        bild.anchor = bild_anker
+        logozelle.value = None
 
 def schreibe_formatierte_kalkulationsdaten(daten : Kalkulationsdaten, ws_output : Worksheet, ws_format : Worksheet):
     startpunkt = format_start_finden(ws_output)
