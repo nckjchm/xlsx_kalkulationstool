@@ -65,16 +65,7 @@ class Tabelle:
             self.layout = Layout()
         self.breite : int = 0
         self.hoehe : int = 0
-        self.zellen : list[list[Tabelle.Zelldaten]] = None
         self.valide = False
-
-    def groesse_anpassen(self, breite : int, hoehe : int):
-        self.breite = breite
-        self.hoehe = hoehe
-        self.zellen_neugenerieren()
-
-    def zellen_neugenerieren(self):
-        self.zellen = [[None for _ in range(self.breite)] for _ in range(self.hoehe)]
 
     def groesse_berechnen(self):
         if self.layout is None:

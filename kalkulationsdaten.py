@@ -18,18 +18,6 @@ class Kalkulationsdaten:
             summe += kategorie.untersumme_berechnen()
         return summe
     
-    """
-    def gefiltert_ausgeben(self):
-        ausgabe : list[list[str]] = []
-        for kategorie in self.abrechnungskategorien:
-            if kategorie.ist_nicht_leer():
-                ausgabe.append([kategorie.name, None, None, kategorie.untersumme_berechnen()])
-                for einheit in kategorie.nichtleere_ausfiltern():
-                    ausgabe.append([einheit.name, einheit.menge, str(einheit.preis) + "/" + str(einheit.nenner), einheit.summe_berechnen()])
-        ausgabe.append(["Gesamt", None, None, self.gesamtsumme_berechnen()])
-        return ausgabe
-    """
-    
     def format_string(self, kategorie = None, einheit = None, *args, **kwargs):
         formdict = {
             "[GESAMT_SUMME]" : self.gesamtsumme_berechnen()

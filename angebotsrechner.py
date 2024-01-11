@@ -43,7 +43,6 @@ def datei_abwickeln(dateiname : str):
     else:
         print(f"Konnte keine Datei unter dem Namen/Pfad {dateiname} finden")
 
-
 #Steuert die Kalkulationserstellung für eine einzelne Inputdatei
 def lese_kalkulationsdaten(dateiname : str):
     datei : Workbook = workbook_oeffnen(dateiname)
@@ -89,11 +88,6 @@ def schreibe_formatierte_kalkulationsdaten(daten : Kalkulationsdaten, ws_output 
         formatierer = Formatierer(daten)
         formatierer.format_einlesen(ws_format)
         formatierer.tabelle_einfuegen(ws_output, startpunkt)
-
-        """
-        formatierte_daten = daten.gefiltert_ausgeben()
-        formatierte_daten_einfuegen(ws, formatierte_daten, startpunkt)
-        """
 
 #Druckt einen Datensatz Kalkulationsdaten als Baumdiagramm auf die Konsole
 def daten_auf_konsole_drucken(daten : Kalkulationsdaten):

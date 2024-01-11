@@ -102,15 +102,3 @@ def formatierungspunkt_finden(ws : Worksheet, muster : str):
             if cell.value == muster:
                 return z_index + 1, s_index + 1
     return None
-
-"""
-def formatierte_daten_einfuegen(ws : Worksheet, daten : list[list[str]], startpunkt : (int, int)):
-    zeilen = len(daten)
-    ws.delete_rows(startpunkt[0])
-    ws.insert_rows(startpunkt[0], zeilen)
-    for z_index, zeile in enumerate(daten):
-        arbeitszeile = startpunkt[0] + z_index
-        for s_index, wert in enumerate(zeile):
-            arbeitsspalte = startpunkt[1] + s_index
-            ws.cell(arbeitszeile, arbeitsspalte, wert)
-"""
